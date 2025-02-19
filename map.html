@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+    
+<head>
+    <title>AIS Map</title>
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key }}"></script>
+    <style>
+        /* Stile per il contenitore della mappa */
+        #map {
+            width: 1024px;  /* Larghezza fissa */
+            height: 768px;  /* Altezza fissa */
+            margin: 0 auto; /* Centra il div orizzontalmente */
+            border: 2px solid #ccc; /* Aggiunge un bordo per migliorare l'aspetto */
+        }
+
+        /* Stile per il titolo e il link di configurazione */
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .config-link {
+            display: block;
+            text-align: center;
+            margin-top: 10px;
+            font-size: 16px;
+        }
+        .center-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 10vh; /* Imposta l'altezza del contenitore alla vista della pagina */
+            /*flex-direction: column;  Allinea i link verticalmente */
+        }
+        .center-container a {
+            margin: 0 0px; /* Aggiunge un po' di spazio tra i link */
+        }
+    </style>
+    <script>
+        let map;
+        let targetMsim = {{ target_msim }};
+        let markers = {};
+
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 2,
+                center: { lat: 0, lng: 0 }
+            });
+
+            // Aggiorna la mappa ogni 2 secondi
+            setInterval(updateMap, 2000);
+        }
+
+        function updateMap() {
+            fetch('/get_ships')
+                .then(response => response.json())
+                .then(ships => {
+                    for (const [msim, coordinates] of Object.entries(ships)) {
+                        const lat = coordinates[0];
+                        const lng = coordinates[1];
+                        const status = coordinates[2];
+                        const turn = coordinates[3];
+                        const speed = coordinates[4];
+                        const course = coordinates[5];
+                        const heading = coordinates[5];
+
+                        if (markers[msim]) {
+                            // Aggiorna la posizione del marker esistente
+                            markers[msim].setPosition({ lat, lng });
+                        } else {
+                            // Crea un nuovo marker
+                            const marker = new google.maps.Marker({
+                                position: { lat, lng },
+                                map: map,
+                                title: `MMSI: ${msim}\nstatus: ${status}\nturn: ${turn}\nspeed: ${speed}\ncourse: ${course}\nheading: ${heading}`,
+                                icon: msim == targetMsim ? "http://maps.google.com/mapfiles/ms/icons/blue-dot.png" : null
+                            });
+                            markers[msim] = marker;
+                        }
+                    }
+                });
+        }
+    </script>
+</head>
+<body onload="initMap()">
+    <h1>AIS Google Map Viewer</h1>
+    <div id="map"></div>
+    <div class="center-container">
+        <a href="/configure">Configure Settings---- + </a>
+        <a href="/get_ships">----Json Ships API page</a>
+    </div>
+    <footer>
+        <p>Powered by E. G. Licensed under GNU.</p>
+    </footer>
+</body>
+
+</html>
