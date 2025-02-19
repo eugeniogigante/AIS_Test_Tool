@@ -26,6 +26,6 @@ Let’s Connect!
 If you’re interested in AIS data, maritime technology, or open-source tools, let’s connect! Feel free to reach out to me for collaborations, questions, or feedback. Together, we can build tools that make a difference in the maritime industry.
 #AIS #MaritimeTechnology #OpenSource #DataVisualization #TestingTools #Python #GoogleMaps #Innovation
 ________________________________________
-Note: Replace [GitHub Repository Link] with the actual link to your GitHub repository. This article is designed to be professional, engaging, and informative, making it suitable for sharing on LinkedIn to attract attention from professionals in the maritime and tech industries.
+Note:  This article is designed to be professional, engaging, and informative, making it suitable for sharing on LinkedIn to attract attention from professionals in the maritime and tech industries.
 
 ![AIS Test Tool](https://github.com/user-attachments/assets/58fe3123-8564-4ce5-9f12-700a388bbf45)
